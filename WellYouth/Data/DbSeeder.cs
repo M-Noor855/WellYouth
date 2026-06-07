@@ -188,26 +188,42 @@ namespace WellYouth.Data
             }
             await context.SaveChangesAsync();
 
-            if (!context.CommunityGroups.Any())
+            var communityGroups = new List<CommunityGroup>
             {
-                var groups = new List<CommunityGroup>
+                new CommunityGroup { 
+                    Name = "Mindful Students", 
+                    Description = "A safe space to discuss school stress and mindfulness techniques.",
+                    Guidelines = "Be respectful, no bullying, keep it supportive.",
+                    CreatedAt = DateTime.UtcNow
+                },
+                new CommunityGroup { 
+                    Name = "Active Youth", 
+                    Description = "Share your fitness journey and find workout buddies.",
+                    Guidelines = "Encourage others, share tips, no spam.",
+                    CreatedAt = DateTime.UtcNow
+                },
+                new CommunityGroup { 
+                    Name = "Healthy Eaters", 
+                    Description = "Exchange recipes, meal prep tips, and discuss balanced nutrition for a healthy lifestyle.",
+                    Guidelines = "Share accurate info, be supportive, no diet-shaming.",
+                    CreatedAt = DateTime.UtcNow
+                },
+                new CommunityGroup { 
+                    Name = "Sleep Better", 
+                    Description = "A group dedicated to improving sleep habits, sharing wind-down routines, and discussing the importance of rest.",
+                    Guidelines = "Keep discussions helpful and evidence-based where possible.",
+                    CreatedAt = DateTime.UtcNow
+                }
+            };
+
+            foreach (var group in communityGroups)
+            {
+                if (!context.CommunityGroups.Any(g => g.Name == group.Name))
                 {
-                    new CommunityGroup { 
-                        Name = "Mindful Students", 
-                        Description = "A safe space to discuss school stress and mindfulness techniques.",
-                        Guidelines = "Be respectful, no bullying, keep it supportive.",
-                        CreatedAt = DateTime.UtcNow
-                    },
-                    new CommunityGroup { 
-                        Name = "Active Youth", 
-                        Description = "Share your fitness journey and find workout buddies.",
-                        Guidelines = "Encourage others, share tips, no spam.",
-                        CreatedAt = DateTime.UtcNow
-                    }
-                };
-                context.CommunityGroups.AddRange(groups);
-                await context.SaveChangesAsync();
+                    context.CommunityGroups.Add(group);
+                }
             }
+            await context.SaveChangesAsync();
 
             var activitySeeds = new List<WellnessActivity>
             {

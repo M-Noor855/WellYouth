@@ -68,5 +68,25 @@ namespace WellYouth.Services.Implementations
                 .Select(m => m.Group!)
                 .ToListAsync();
         }
+
+        public async Task<bool> DeletePostAsync(int postId, string userId)
+        {
+            var post = await _context.CommunityPosts.FindAsync(postId);
+            if (post == null || post.UserId != userId) return false;
+
+            _context.CommunityPosts.Remove(post);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> LeaveGroupAsync(int groupId, string userId)
+        {
+            var membership = await _context.CommunityGroupMembers
+                .FirstOrDefaultAsync(m => m.GroupId == groupId && m.UserId == userId);
+            
+            if (membership == null) return false;
+
+            _context.CommunityGroupMembers.Remove(membership);
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

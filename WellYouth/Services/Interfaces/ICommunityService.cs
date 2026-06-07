@@ -11,5 +11,7 @@ namespace WellYouth.Services.Interfaces
         Task<bool> JoinGroupAsync(int groupId, string userId);
         Task<bool> IsMemberAsync(int groupId, string userId);
         Task<List<CommunityGroup>> GetUserGroupsAsync(string userId);
+        Task<bool> DeletePostAsync(int postId, string userId);
+        Task<bool> LeaveGroupAsync(int groupId, string userId);
     }
 }

@@ -90,5 +90,29 @@ namespace WellYouth.Controllers
             await _communityService.CreatePostAsync(post);
             return RedirectToAction(nameof(Group), new { id = groupId });
         }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeletePost(int id, int groupId)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Challenge();
+
+            await _communityService.DeletePostAsync(id, userId);
+            return RedirectToAction(nameof(Group), new { id = groupId });
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Leave(int id)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Challenge();
+
+            await _communityService.LeaveGroupAsync(id, userId);
+            return RedirectToAction(nameof(Group), new { id });
+        }
     }
 }

@@ -1,8 +1,10 @@
+@using System.Security.Claims
 @model WellYouth.Models.Entities.CommunityGroup
 @{
     ViewData["Title"] = Model.Name;
     var posts = (List<WellYouth.Models.Entities.CommunityPost>)ViewBag.Posts ?? new List<WellYouth.Models.Entities.CommunityPost>();
     bool isMember = (bool)ViewBag.IsMember;
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <section class="page-section">
@@ -26,7 +28,13 @@
                 }
                 else
                 {
-                    <span class="pill pill--success"><i class="fas fa-check-circle"></i> You are a member</span>
+                    <div class="stack">
+                        <span class="pill pill--success"><i class="fas fa-check-circle"></i> You are a member</span>
+                        <form asp-action="Leave" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="button button--secondary section-width-full" onclick="return confirm('Are you sure you want to leave this group?')">Leave group</button>
+                        </form>
+                    </div>
                 }
             </div>
         </aside>
@@ -60,6 +68,16 @@
                                     <h3 class="text-size-sm">@(post.User?.FullName ?? "Unknown user")</h3>
                                     <span class="text-muted">@post.PostTime.ToString("MMM dd, h:mm tt")</span>
                                 </div>
+                                @if (post.UserId == currentUserId)
+                                {
+                                    <form asp-action="DeletePost" method="post" class="post-card__actions">
+                                        <input type="hidden" name="id" value="@post.Id" />
+                                        <input type="hidden" name="groupId" value="@Model.Id" />
+                                        <button type="submit" class="button button--text button--danger" onclick="return confirm('Delete this message?')">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </button>
+                                    </form>
+                                }
                             </div>
                             <p>@post.Content</p>
                         </article>
