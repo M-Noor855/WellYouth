@@ -1,0 +1,47 @@
+@model List<WellYouth.Models.Entities.CommunityGroup>
+@{
+    ViewData["Title"] = "Community";
+    var userGroups = (List<WellYouth.Models.Entities.CommunityGroup>)ViewBag.UserGroups ?? new List<WellYouth.Models.Entities.CommunityGroup>();
+}
+
+<section class="page-section">
+    <div class="page-header">
+        <div class="page-header__content">
+            <span class="page-header__eyebrow"><i class="fas fa-users"></i> Shared support</span>
+            <h1>Community groups</h1>
+            <p>Find focused spaces for support, accountability, and respectful conversations around wellness.</p>
+        </div>
+    </div>
+
+    @if (userGroups.Any())
+    {
+        <section class="page-section">
+            <h2 class="section-title">My groups</h2>
+            <div class="grid-auto">
+                @foreach (var group in userGroups)
+                {
+                    <article class="surface-card surface-card--accent feature-card">
+                        <h3>@group.Name</h3>
+                        <p>@group.Description</p>
+                        <a asp-action="Group" asp-route-id="@group.Id" class="button button--primary">Enter group</a>
+                    </article>
+                }
+            </div>
+        </section>
+    }
+
+    <section class="page-section">
+        <h2 class="section-title">Discover groups</h2>
+        <div class="grid-auto">
+            @foreach (var group in Model.Where(g => !userGroups.Any(ug => ug.Id == g.Id)))
+            {
+                <article class="surface-card feature-card">
+                    <span class="pill pill--accent">Public group</span>
+                    <h3>@group.Name</h3>
+                    <p>@group.Description</p>
+                    <a asp-action="Group" asp-route-id="@group.Id" class="button button--outline">View group</a>
+                </article>
+            }
+        </div>
+    </section>
+</section>

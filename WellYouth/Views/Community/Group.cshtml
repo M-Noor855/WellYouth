@@ -1,0 +1,78 @@
+@model WellYouth.Models.Entities.CommunityGroup
+@{
+    ViewData["Title"] = Model.Name;
+    var posts = (List<WellYouth.Models.Entities.CommunityPost>)ViewBag.Posts ?? new List<WellYouth.Models.Entities.CommunityPost>();
+    bool isMember = (bool)ViewBag.IsMember;
+}
+
+<section class="page-section">
+    <div class="grid-sidebar-main">
+        <aside class="surface-card">
+            <div class="stack">
+                <span class="page-header__eyebrow"><i class="fas fa-users"></i> Group details</span>
+                <h1 class="heading-community">@Model.Name</h1>
+                <p>@Model.Description</p>
+                <div>
+                    <h3 class="section-title">Guidelines</h3>
+                    <p>@Model.Guidelines</p>
+                </div>
+
+                @if (!isMember)
+                {
+                    <form asp-action="Join" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="button button--primary section-width-full">Join group</button>
+                    </form>
+                }
+                else
+                {
+                    <span class="pill pill--success"><i class="fas fa-check-circle"></i> You are a member</span>
+                }
+            </div>
+        </aside>
+
+        <div class="group-feed">
+            @if (isMember)
+            {
+                <section class="surface-card">
+                    <h2 class="section-title">Share with the group</h2>
+                    <form asp-action="Post" method="post" class="stack">
+                        <input type="hidden" name="groupId" value="@Model.Id" />
+                        <div class="field">
+                            <label class="field__label" for="group-post">New post</label>
+                            <textarea id="group-post" name="content" placeholder="Share a question, update, or supportive note..." required></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="button button--primary">Post message</button>
+                        </div>
+                    </form>
+                </section>
+            }
+
+            <section class="stack">
+                @if (posts.Any())
+                {
+                    @foreach (var post in posts)
+                    {
+                        <article class="surface-card post-card">
+                            <div class="post-card__head">
+                                <div class="stack stack-gap-compact">
+                                    <h3 class="text-size-sm">@(post.User?.FullName ?? "Unknown user")</h3>
+                                    <span class="text-muted">@post.PostTime.ToString("MMM dd, h:mm tt")</span>
+                                </div>
+                            </div>
+                            <p>@post.Content</p>
+                        </article>
+                    }
+                }
+                else
+                {
+                    <div class="surface-card empty-state">
+                        <h3>No posts yet</h3>
+                        <p>Be the first to start a respectful conversation in this group.</p>
+                    </div>
+                }
+            </section>
+        </div>
+    </div>
+</section>

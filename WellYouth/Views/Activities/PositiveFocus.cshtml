@@ -1,0 +1,39 @@
+@model WellYouth.Models.Entities.WellnessActivity
+@{
+    ViewData["Title"] = "Positive Focus";
+}
+
+<section class="page-section">
+    <div class="content-container content-container--narrow">
+        <div class="surface-card" data-mood-root>
+            <div class="activity-stage">
+                <span class="page-header__eyebrow"><i class="fas fa-bullseye"></i> Intentional Living</span>
+                <h1>@Model.Title</h1>
+                <p>@Model.Description</p>
+
+                <div class="checklist-group">
+                    <p class="text-center"><strong>I will focus on:</strong></p>
+                    <button type="button" class="checklist-item" data-focus-option>
+                        <i class="fas fa-heart-pulse color-danger"></i> <span>Being kind to myself</span>
+                    </button>
+                    <button type="button" class="checklist-item" data-focus-option>
+                        <i class="fas fa-battery-half color-info"></i> <span>Listening to my body's needs</span>
+                    </button>
+                    <button type="button" class="checklist-item" data-focus-option>
+                        <i class="fas fa-comments" style="color: var(--color-primary);"></i> <span>Communicating clearly with others</span>
+                    </button>
+                    <button type="button" class="checklist-item" data-focus-option>
+                        <i class="fas fa-brain" style="color: var(--color-accent);"></i> <span>Staying curious and learning</span>
+                    </button>
+                </div>
+
+                <form asp-action="Complete" method="post" class="button--full-width">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="button button--primary button--large button--full-width" disabled data-activity-complete>
+                        Set my focus (+@Model.PointsValue points)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

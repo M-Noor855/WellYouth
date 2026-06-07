@@ -1,0 +1,64 @@
+@model WellYouth.Models.ViewModels.Account.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<section class="page-section">
+    <div class="page-header">
+        <div class="page-header__content">
+            <span class="page-header__eyebrow"><i class="fas fa-seedling"></i> Create your account</span>
+            <h1>Start with a calmer wellness workspace</h1>
+            <p>Set up your account to track habits, connect with support groups, and save assistant conversations.</p>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="surface-card">
+            <form asp-action="Register" method="post" class="stack">
+                <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+                <div class="field">
+                    <label asp-for="FullName" class="field__label"></label>
+                    <input asp-for="FullName" placeholder="Full name" />
+                    <span asp-validation-for="FullName" class="field-validation-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Username" class="field__label"></label>
+                    <input asp-for="Username" placeholder="Username" />
+                    <span asp-validation-for="Username" class="field-validation-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Email" class="field__label"></label>
+                    <input asp-for="Email" placeholder="name@example.com" />
+                    <span asp-validation-for="Email" class="field-validation-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="BirthDate" class="field__label"></label>
+                    <input asp-for="BirthDate" type="date" />
+                    <span asp-validation-for="BirthDate" class="field-validation-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Password" class="field__label"></label>
+                    <input asp-for="Password" placeholder="Password" />
+                    <span asp-validation-for="Password" class="field-validation-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="ConfirmPassword" class="field__label"></label>
+                    <input asp-for="ConfirmPassword" placeholder="Confirm password" />
+                    <span asp-validation-for="ConfirmPassword" class="field-validation-error"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="button button--primary">Create account</button>
+                </div>
+            </form>
+
+            <p class="text-muted">Already registered? <a asp-action="Login"><strong>Go to login.</strong></a></p>
+        </div>
+    </div>
+</section>

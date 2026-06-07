@@ -1,0 +1,70 @@
+@model List<WellYouth.Models.Entities.Article>
+@{
+    ViewData["Title"] = "Articles";
+}
+
+<section class="page-section">
+    <div class="page-header">
+        <div class="page-header__content">
+            <span class="page-header__eyebrow"><i class="fas fa-book-open"></i> Reviewed reading</span>
+            <h1>Health articles</h1>
+            <p>Browse short, approachable content about physical health, mental well-being, and healthy routines.</p>
+        </div>
+    </div>
+
+    <div class="article-layout">
+        <aside class="surface-card">
+            <div class="stack">
+                <form asp-action="Index" method="get" class="stack">
+                    <div class="field">
+                        <label class="field__label" for="article-search">Search articles</label>
+                        <input id="article-search" type="text" name="query" value="@ViewBag.SearchQuery" placeholder="Sleep, stress, movement..." />
+                    </div>
+                    <button type="submit" class="button button--primary">Search</button>
+                </form>
+
+                <div>
+                    <h3 class="section-title">Categories</h3>
+                    <div class="category-nav">
+                        <a asp-action="Index" class="category-link @(ViewBag.CurrentCategory == null ? "is-active" : "")">All categories</a>
+                        @foreach (var cat in (List<WellYouth.Models.Entities.ArticleCategory>)ViewBag.Categories)
+                        {
+                            <a asp-action="Index" asp-route-categoryId="@cat.Id" class="category-link @(ViewBag.CurrentCategory == cat.Id ? "is-active" : "")">@cat.Name</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div>
+            @if (Model.Any())
+            {
+                <div class="grid-auto">
+                    @foreach (var article in Model)
+                    {
+                        <article class="surface-card feature-card">
+                            <span class="pill pill--primary">@article.Category?.Name</span>
+                            <h3>@article.Title</h3>
+                            <p>@article.Summary</p>
+                            <div class="meta-list">
+                                <span>@article.PublishedDate?.ToString("MMM dd, yyyy")</span>
+                                @if (!string.IsNullOrWhiteSpace(article.AuthorName))
+                                {
+                                    <span>@article.AuthorName</span>
+                                }
+                            </div>
+                            <a asp-action="Details" asp-route-slug="@article.Slug" class="button button--outline">Read article</a>
+                        </article>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="surface-card empty-state">
+                    <h3>No articles found</h3>
+                    <p>Try a different search term or open all categories again.</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>

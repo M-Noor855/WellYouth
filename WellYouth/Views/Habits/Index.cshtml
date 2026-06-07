@@ -1,0 +1,77 @@
+@model WellYouth.Models.ViewModels.Habits.HabitsViewModel
+@{
+    ViewData["Title"] = "Habits";
+}
+
+<section class="page-section">
+    <div class="page-header">
+        <div class="page-header__content">
+            <span class="page-header__eyebrow"><i class="fas fa-list-check"></i> Daily consistency</span>
+            <h1>My health habits</h1>
+            <p>Track repeatable actions that support your energy, focus, sleep, and emotional balance.</p>
+        </div>
+        <div class="cluster">
+            <span class="pill pill--primary"><i class="fas fa-trophy"></i> Score: @Model.CurrentScore</span>
+            <a asp-action="Create" class="button button--primary">New habit</a>
+        </div>
+    </div>
+
+    <div class="surface-card">
+        <div class="split section-title">
+            <h2>Today's checklist</h2>
+            <span class="text-muted">@Model.SelectedDate.ToString("MMMM dd, yyyy")</span>
+        </div>
+
+        @if (Model.UserHabits.Any())
+        {
+            <div class="list-clean">
+                @foreach (var habit in Model.UserHabits)
+                {
+                    var log = Model.RecentLogs.FirstOrDefault(l => l.HealthHabitId == habit.Id);
+                    var isCompleted = log?.IsCompleted ?? false;
+
+                    <div class="list-item habit-row">
+                        <div class="stack stack-gap-tight">
+                            <h3>@habit.Name</h3>
+                            <div class="meta-list">
+                                <span>@habit.Category</span>
+                                @if (!string.IsNullOrWhiteSpace(habit.TargetFrequency))
+                                {
+                                    <span>@habit.TargetFrequency</span>
+                                }
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(habit.Description))
+                            {
+                                <p>@habit.Description</p>
+                            }
+                        </div>
+
+                        <form asp-action="Log" method="post">
+                            <input type="hidden" name="habitId" value="@habit.Id" />
+                            <input type="hidden" name="isCompleted" value="@(isCompleted ? "false" : "true")" />
+                            <button type="submit" class="button @(isCompleted ? "button--secondary" : "button--primary")">
+                                @if (isCompleted)
+                                {
+                                    <i class="fas fa-check-circle"></i><span>Completed</span>
+                                }
+                                else
+                                {
+                                    <i class="far fa-circle"></i><span>Log done</span>
+                                }
+                            </button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="fas fa-seedling fa-3x"></i>
+                <h3>No habits added yet</h3>
+                <p>Start with one simple daily action and build from there.</p>
+                <a asp-action="Create" class="button button--primary">Create my first habit</a>
+            </div>
+        }
+    </div>
+</section>

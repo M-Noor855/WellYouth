@@ -1,0 +1,50 @@
+@model WellYouth.Models.Entities.WellnessActivity
+@{
+    ViewData["Title"] = "Mood Check-In";
+}
+
+<section class="page-section">
+    <div class="content-container content-container--narrow">
+        <div class="surface-card" data-mood-root>
+            <div class="activity-stage">
+                <span class="page-header__eyebrow"><i class="fas fa-face-smile"></i> Self-Reflection</span>
+                <h1>@Model.Title</h1>
+                <p>@Model.Description</p>
+
+                <div class="mood-options grid-auto">
+                    <button type="button" class="button button--outline mood-btn" data-mood-option="great">
+                        <i class="fas fa-laugh-beam"></i>
+                        <span>Great</span>
+                    </button>
+                    <button type="button" class="button button--outline mood-btn" data-mood-option="good">
+                        <i class="fas fa-smile"></i>
+                        <span>Good</span>
+                    </button>
+                    <button type="button" class="button button--outline mood-btn" data-mood-option="okay">
+                        <i class="fas fa-meh"></i>
+                        <span>Okay</span>
+                    </button>
+                    <button type="button" class="button button--outline mood-btn" data-mood-option="tired">
+                        <i class="fas fa-tired"></i>
+                        <span>Tired</span>
+                    </button>
+                    <button type="button" class="button button--outline mood-btn" data-mood-option="stressed">
+                        <i class="fas fa-frown-open"></i>
+                        <span>Stressed</span>
+                    </button>
+                </div>
+
+                <div class="stat-card">
+                    <p>Acknowledge your feeling without judgment. It's okay to feel however you're feeling.</p>
+                </div>
+
+                <form asp-action="Complete" method="post" class="button--full-width">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="button button--primary button--large button--full-width" disabled data-activity-complete>
+                        Log check-in (+@Model.PointsValue points)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

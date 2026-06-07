@@ -1,0 +1,36 @@
+@model WellYouth.Models.Entities.WellnessActivity
+@{
+    ViewData["Title"] = "Hydration Challenge";
+}
+
+<section class="page-section">
+    <div class="content-container content-container--narrow">
+        <div class="surface-card" data-mood-root>
+            <div class="activity-stage">
+                <span class="page-header__eyebrow"><i class="fas fa-glass-water"></i> Daily Essential</span>
+                <h1>@Model.Title</h1>
+                <p>@Model.Description</p>
+
+                <div class="activity-visual color-info">
+                    <i class="fas fa-glass-water"></i>
+                </div>
+                
+                <label class="checklist-item hydration-check">
+                    <input type="checkbox" class="checkbox-item__input" data-hydration-check>
+                    <span class="checkbox-item__label">I've finished my glass of water!</span>
+                </label>
+
+                <div class="stat-card stat-card--info">
+                    <p><strong>Tip:</strong> Drinking water helps maintain energy levels and improves brain function throughout the day.</p>
+                </div>
+
+                <form asp-action="Complete" method="post" class="button--full-width">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="button button--primary button--large button--full-width" disabled data-activity-complete>
+                        Complete activity (+@Model.PointsValue points)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

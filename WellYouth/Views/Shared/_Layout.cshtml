@@ -1,0 +1,98 @@
+@{
+    var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["Action"]?.ToString();
+    bool IsActive(string targetController, string? targetAction = null) =>
+        string.Equals(controller, targetController, StringComparison.OrdinalIgnoreCase) &&
+        (targetAction == null || string.Equals(action, targetAction, StringComparison.OrdinalIgnoreCase));
+}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WellYouth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/reset.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tokens.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pages.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="site-shell">
+        <header class="site-header">
+            <div class="site-header__inner">
+                <a class="site-brand" asp-controller="Home" asp-action="Index">
+                    <span class="site-brand__mark"><i class="fas fa-leaf"></i></span>
+                    <span>WellYouth</span>
+                </a>
+
+                <nav class="site-nav" aria-label="Primary">
+                    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-panel" data-nav-toggle>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="site-nav__panel" id="site-nav-panel">
+                        <ul class="site-nav__list">
+                            <li><a class="nav-link @(IsActive("Home", "Index") ? "is-active" : "")" asp-controller="Home" asp-action="Index">Home</a></li>
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <li><a class="nav-link @(IsActive("Habits") ? "is-active" : "")" asp-controller="Habits" asp-action="Index">Habits</a></li>
+                            }
+                            <li><a class="nav-link @(IsActive("Articles") ? "is-active" : "")" asp-controller="Articles" asp-action="Index">Articles</a></li>
+                            <li><a class="nav-link @(IsActive("Community") ? "is-active" : "")" asp-controller="Community" asp-action="Index">Community</a></li>
+                            <li><a class="nav-link @(IsActive("Specialists") ? "is-active" : "")" asp-controller="Specialists" asp-action="Index">Specialists</a></li>
+                            <li><a class="nav-link @(IsActive("Activities") ? "is-active" : "")" asp-controller="Activities" asp-action="Index">Activities</a></li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <div class="site-actions">
+                    <button id="themeToggle" class="theme-toggle" type="button" title="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <details class="user-menu">
+                            <summary class="user-menu__button">
+                                <i class="fas fa-user-circle"></i>
+                                <span>@User.Identity.Name</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </summary>
+                            <div class="user-menu__panel">
+                                <a asp-controller="Profile" asp-action="Index"><i class="fas fa-user"></i> My profile</a>
+                                <a asp-controller="Assistant" asp-action="Index"><i class="fas fa-comment-dots"></i> Assistant</a>
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    <button type="submit"><i class="fas fa-right-from-bracket"></i> Log out</button>
+                                </form>
+                            </div>
+                        </details>
+                    }
+                    else
+                    {
+                        <a class="button button--ghost" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="button button--primary" asp-controller="Account" asp-action="Register">Register</a>
+                    }
+                </div>
+            </div>
+        </header>
+
+        <main class="site-main">
+            <div class="page-container">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <a asp-controller="Assistant" asp-action="Index" class="floating-assistant" title="Open assistant">
+            <i class="fas fa-robot"></i>
+        </a>
+    }
+
+    <script src="~/js/app.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

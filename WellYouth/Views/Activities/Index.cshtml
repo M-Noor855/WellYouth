@@ -1,0 +1,64 @@
+@model List<WellYouth.Models.Entities.WellnessActivity>
+@{
+    ViewData["Title"] = "Activities";
+}
+
+<section class="page-section">
+    <div class="page-header">
+        <div class="page-header__content">
+            <span class="page-header__eyebrow"><i class="fas fa-spa"></i> Wellness Hub</span>
+            <h1>Wellness activities</h1>
+            <p>Take a short break, regulate your emotions, and earn points through restorative activities.</p>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success mb-5">@TempData["Success"]</div>
+    }
+
+    @{
+        var calmActivities = Model.Where(a => new[] { "Breathing", "Mindfulness", "MoodCheckIn" }.Contains(a.ActivityType)).ToList();
+        var dailyActivities = Model.Where(a => new[] { "Hydration", "Stretch", "SleepWindDown" }.Contains(a.ActivityType)).ToList();
+        var mindsetActivities = Model.Where(a => new[] { "Gratitude", "PositiveFocus" }.Contains(a.ActivityType)).ToList();
+    }
+
+    @if (calmActivities.Any())
+    {
+        <div class="activity-category-section">
+            <h2 class="activity-category-title"><i class="fas fa-wind"></i> Calm & Regulate</h2>
+            <div class="grid-auto">
+                @foreach (var activity in calmActivities)
+                {
+                    <partial name="_ActivityCard" model="activity" />
+                }
+            </div>
+        </div>
+    }
+
+    @if (dailyActivities.Any())
+    {
+        <div class="activity-category-section">
+            <h2 class="activity-category-title"><i class="fas fa-bolt"></i> Daily Essentials</h2>
+            <div class="grid-auto">
+                @foreach (var activity in dailyActivities)
+                {
+                    <partial name="_ActivityCard" model="activity" />
+                }
+            </div>
+        </div>
+    }
+
+    @if (mindsetActivities.Any())
+    {
+        <div class="activity-category-section">
+            <h2 class="activity-category-title"><i class="fas fa-heart"></i> Positive Mindset</h2>
+            <div class="grid-auto">
+                @foreach (var activity in mindsetActivities)
+                {
+                    <partial name="_ActivityCard" model="activity" />
+                }
+            </div>
+        </div>
+    }
+</section>

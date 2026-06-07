@@ -1,0 +1,47 @@
+@model WellYouth.Models.Entities.WellnessActivity
+@{
+    ViewData["Title"] = "Sleep Wind-Down";
+}
+
+<section class="page-section">
+    <div class="content-container content-container--narrow">
+        <div class="surface-card" data-mood-root>
+            <div class="activity-stage">
+                <span class="page-header__eyebrow"><i class="fas fa-moon"></i> Nightly Routine</span>
+                <h1>@Model.Title</h1>
+                <p>@Model.Description</p>
+
+                <div class="checklist-group w-100">
+                    <label class="checklist-item">
+                        <input type="checkbox" class="checkbox-item__input" data-sleep-step>
+                        <div class="checklist-item__content">
+                            <h4>Screen Dimming</h4>
+                            <p>Turn off bright lights or put your devices on night mode.</p>
+                        </div>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" class="checkbox-item__input" data-sleep-step>
+                        <div class="checklist-item__content">
+                            <h4>Hydration Check</h4>
+                            <p>Have a few sips of water, but not too much!</p>
+                        </div>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" class="checkbox-item__input" data-sleep-step>
+                        <div class="checklist-item__content">
+                            <h4>Comfy Space</h4>
+                            <p>Ensure your sleeping area is cool, dark, and quiet.</p>
+                        </div>
+                    </label>
+                </div>
+
+                <form asp-action="Complete" method="post" class="button--full-width">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="button button--primary button--large button--full-width" disabled data-activity-complete>
+                        I'm ready for bed (+@Model.PointsValue points)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

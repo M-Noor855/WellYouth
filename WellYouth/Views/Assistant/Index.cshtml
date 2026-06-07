@@ -1,0 +1,234 @@
+@{
+    ViewData["Title"] = "Assistant";
+    var conversations = (List<WellYouth.Models.Entities.AssistantConversation>)ViewBag.Conversations ?? new List<WellYouth.Models.Entities.AssistantConversation>();
+    var messages = (List<WellYouth.Models.Entities.AssistantMessage>)ViewBag.Messages ?? new List<WellYouth.Models.Entities.AssistantMessage>();
+    int? currentId = (int?)ViewBag.CurrentConversationId;
+}
+
+<section class="page-section">
+    <div class="page-header">
+        <div class="page-header__content">
+            <span class="page-header__eyebrow"><i class="fas fa-robot"></i> Guided support</span>
+            <h1>AI health assistant</h1>
+            <p>Use the assistant for general wellness guidance and help navigating WellYouth. It is not a doctor.</p>
+        </div>
+    </div>
+
+    <div class="grid-chat">
+        <aside class="surface-card">
+            <div class="stack">
+                <form asp-action="NewChat" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="button button--primary section-width-full">New chat</button>
+                </form>
+
+                <div class="conversation-list">
+                    @foreach (var conv in conversations)
+                    {
+                        <div class="conversation-item @(currentId == conv.Id ? "is-active" : "")" id="conv-@conv.Id">
+                            <a asp-action="Index" asp-route-id="@conv.Id" class="conversation-link">
+                                <strong>@conv.Title</strong>
+                                <span class="text-muted">@conv.CreatedAt.ToShortDateString()</span>
+                            </a>
+                            <button type="button" class="button-delete" onclick="confirmDelete(@conv.Id, '@conv.Title')">
+                                <i class="fas fa-trash-can"></i>
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </aside>
+
+        <section class="surface-card">
+            @if (currentId.HasValue)
+            {
+                <div class="stack">
+                    <div id="chat-messages" class="chat-window">
+                        <partial name="_MessageBubbles" model="messages" />
+                    </div>
+
+                    <form id="chat-form" asp-action="SendMessage" method="post" class="stack">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="conversationId" value="@currentId" />
+                        <div class="composer">
+                            <input type="text" id="message-input" name="message" placeholder="Type your message here..." required autocomplete="off" />
+                            <button type="submit" class="button button--primary">Send</button>
+                        </div>
+                        <p class="field__help">This assistant gives general guidance only and should not be treated as medical advice.</p>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="fas fa-comment-medical fa-3x"></i>
+                    <h3>Start a new conversation</h3>
+                    <p>Ask about habits, platform features, or general wellness support.</p>
+                </div>
+            }
+        </section>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const chatMessages = document.getElementById('chat-messages');
+            const chatForm = document.getElementById('chat-form');
+            const messageInput = document.getElementById('message-input');
+
+            if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Global delete function
+            window.confirmDelete = async function(id, title) {
+                if (confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) {
+                    try {
+                        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                        const response = await fetch(`/Assistant/Delete/${id}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'RequestVerificationToken': token
+                            }
+                        });
+
+                        if (response.ok) {
+                            const element = document.getElementById(`conv-${id}`);
+                            if (element) element.remove();
+                            if ('@currentId' == id) window.location.href = '/Assistant';
+                        } else {
+                            alert('Server error: Could not delete conversation.');
+                        }
+                    } catch (error) {
+                        alert('Network error: Check your connection.');
+                    }
+                }
+            };
+
+            function createBubble(sender, content, isLoading = false) {
+                const article = document.createElement('article');
+                article.className = `chat-bubble ${sender === 'User' ? 'chat-bubble--user' : 'chat-bubble--assistant'}`;
+                
+                const body = document.createElement('div');
+                body.className = 'chat-bubble__body';
+                if (isLoading) {
+                    body.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+                } else {
+                    body.textContent = content;
+                }
+                
+                const footer = document.createElement('div');
+                footer.className = 'chat-bubble__footer';
+                footer.innerHTML = `<time>${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</time>`;
+                
+                article.appendChild(body);
+                article.appendChild(footer);
+                return article;
+            }
+
+            async function typeWriter(element, text) {
+                const speed = 10; // Faster speed: 10ms per character
+                let i = 0;
+                let isBold = false;
+                let currentContainer = element;
+                element.textContent = '';
+
+                return new Promise(resolve => {
+                    function type() {
+                        if (i < text.length) {
+                            // Check for bold markers **
+                            if (text.substring(i, i + 2) === '**') {
+                                isBold = !isBold;
+                                if (isBold) {
+                                    const strong = document.createElement('strong');
+                                    element.appendChild(strong);
+                                    currentContainer = strong;
+                                } else {
+                                    currentContainer = element;
+                                }
+                                i += 2; // Skip the ** markers
+                                type(); // Move to next character immediately
+                                return;
+                            }
+
+                            // Append character to either the strong tag or the main div
+                            const char = text.charAt(i);
+                            
+                            if (char === '\n') {
+                                element.appendChild(document.createElement('br'));
+                                i++;
+                                type();
+                                return;
+                            }
+
+                            const textNode = document.createTextNode(char);
+                            currentContainer.appendChild(textNode);
+
+                            i++;
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                            setTimeout(type, speed);
+                        } else {
+                            resolve();
+                        }
+                    }
+                    type();
+                });
+            }
+
+            if (chatForm) {
+                chatForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const message = messageInput.value.trim();
+                    if (!message) return;
+
+                    // 1. Display User Message Immediately
+                    const userBubble = createBubble('User', message);
+                    chatMessages.appendChild(userBubble);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    const formData = new FormData(chatForm);
+                    messageInput.value = '';
+                    messageInput.disabled = true;
+
+                    // 2. Display Thinking Indicator
+                    const thinkingBubble = createBubble('Assistant', '', true);
+                    chatMessages.appendChild(thinkingBubble);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    try {
+                        const response = await fetch(chatForm.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.success) {
+                                // 3. Replace Typing dots with Typewriter effect
+                                const body = thinkingBubble.querySelector('.chat-bubble__body');
+                                if (body) {
+                                    await typeWriter(body, data.content);
+                                }
+                            } else {
+                                thinkingBubble.remove();
+                                alert('AI Error: ' + data.error);
+                            }
+                        } else {
+                            thinkingBubble.remove();
+                            const errorText = await response.text();
+                            alert('Server Error: ' + errorText);
+                        }
+                    } catch (error) {
+                        console.error('Frontend Error:', error);
+                        if (thinkingBubble) thinkingBubble.remove();
+                        alert('Network Error: Please check your connection or refresh the page.');
+                    } finally {
+                        messageInput.disabled = false;
+                        messageInput.focus();
+                    }
+                });
+            }
+        });
+    </script>
+}

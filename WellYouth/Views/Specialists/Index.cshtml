@@ -1,0 +1,91 @@
+@model List<WellYouth.Models.Entities.Specialist>
+@{
+    ViewData["Title"] = "Professional Support";
+    var groups = Model.GroupBy(s => s.Specialty).OrderBy(g => g.Key);
+}
+
+<section class="page-section">
+    <div class="page-header">
+        <div class="page-header__content">
+            <span class="page-header__eyebrow"><i class="fas fa-user-md"></i> Verified Support</span>
+            <h1>Connect with Specialists</h1>
+            <p>Direct access to professional mental health and occupational therapy services.</p>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success mb-6">@TempData["Success"]</div>
+    }
+
+    @foreach (var group in groups)
+    {
+        <div class="specialist-section">
+            <h2 class="specialist-group-title h3">@group.Key</h2>
+            <div class="grid-auto">
+                @foreach (var specialist in group)
+                {
+                    <article class="surface-card specialist-card">
+                        <div class="specialist-card__content">
+                            <div class="mb-4">
+                                <span class="pill pill--success"><i class="fas fa-check-circle"></i> Verified Specialist</span>
+                            </div>
+
+                            <h3>@specialist.Name</h3>
+                            <p>@specialist.Description</p>
+                        </div>
+                        
+                        <div class="specialist-card__footer">
+                            <div class="meta-list">
+                                <span><i class="fas fa-map-marker-alt"></i> Amman, Jordan</span>
+                                <span><i class="fas fa-envelope"></i> @specialist.ContactMethod</span>
+                            </div>
+
+                            <div class="stack">
+                                <a href="https://www.wanafs.com/booking" target="_blank" class="button button--primary w-100">
+                                    <i class="fas fa-calendar-check me-2"></i>Book Appointment
+                                </a>
+                                <a href="mailto:@specialist.ContactMethod" class="button button--secondary w-100">
+                                    <i class="fas fa-paper-plane me-2"></i>Email Directly
+                                </a>
+                                
+                                @if (User.Identity?.IsAuthenticated == true)
+                                {
+                                    <button type="button" class="button button--ghost w-100" data-dialog-open="contact-modal-@specialist.Id">
+                                        <i class="fas fa-history me-2"></i>Log Request in Profile
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </article>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <div class="dialog-backdrop" id="contact-modal-@specialist.Id">
+                            <div class="dialog">
+                                <div class="dialog__header split">
+                                    <div>
+                                        <h3>Log Request for @specialist.Name</h3>
+                                        <p>This will save a record of your intent to contact this specialist in your Profile.</p>
+                                    </div>
+                                    <button type="button" class="button button--ghost" data-dialog-close>Close</button>
+                                </div>
+                                <form asp-action="Contact" method="post" class="stack">
+                                    <input type="hidden" name="specialistId" value="@specialist.Id" />
+                                    <div class="field">
+                                        <label class="field__label" for="message-@specialist.Id">Note for your records</label>
+                                        <textarea id="message-@specialist.Id" name="message" required placeholder="I am contacting them regarding..."></textarea>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="button" class="button button--secondary" data-dialog-close>Cancel</button>
+                                        <button type="submit" class="button button--primary">Save Record</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+</section>

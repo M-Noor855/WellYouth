@@ -1,0 +1,38 @@
+@model WellYouth.Models.Entities.WellnessActivity
+
+<article class="activity-card-enhanced">
+    <div class="feature-card__icon @GetCategoryClass(Model.ActivityType)">
+        @switch (Model.ActivityType)
+        {
+            case "Breathing": <i class="fas fa-wind"></i> break;
+            case "MoodCheckIn": <i class="fas fa-face-smile"></i> break;
+            case "Hydration": <i class="fas fa-glass-water"></i> break;
+            case "Mindfulness": <i class="fas fa-spa"></i> break;
+            case "Stretch": <i class="fas fa-person-walking"></i> break;
+            case "Gratitude": <i class="fas fa-heart"></i> break;
+            case "SleepWindDown": <i class="fas fa-moon"></i> break;
+            case "PositiveFocus": <i class="fas fa-bullseye"></i> break;
+            default: <i class="fas fa-spa"></i> break;
+        }
+    </div>
+    <div class="activity-card-content">
+        <h3>@Model.Title</h3>
+        <p>@Model.Description</p>
+    </div>
+    <div class="activity-card-footer">
+        <div class="split align-items-center">
+            <span class="pill pill--success">+@Model.PointsValue points</span>
+            <a asp-action="Play" asp-route-id="@Model.Id" class="button button--primary button--sm">Start activity</a>
+        </div>
+    </div>
+</article>
+
+@functions {
+    string GetCategoryClass(string type)
+    {
+        if (new[] { "Breathing", "Mindfulness", "MoodCheckIn" }.Contains(type)) return "icon-calm";
+        if (new[] { "Hydration", "Stretch", "SleepWindDown" }.Contains(type)) return "icon-daily";
+        if (new[] { "Gratitude", "PositiveFocus" }.Contains(type)) return "icon-mindset";
+        return "";
+    }
+}

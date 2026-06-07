@@ -1,0 +1,91 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<section class="page-section hero">
+    <div class="hero__copy">
+        <span class="page-header__eyebrow"><i class="fas fa-heart-pulse"></i> Youth wellness, built with calm</span>
+        <h1>Build healthier routines for body, mood, and daily focus.</h1>
+        <p>
+            WellYouth helps young people track habits, learn from reviewed health content, connect with communities,
+            and use guided activities without turning the experience into a cluttered dashboard.
+        </p>
+        <div class="cluster">
+            <a class="button button--primary" asp-controller="Habits" asp-action="Index">Start tracking</a>
+            <a class="button button--outline" asp-controller="Articles" asp-action="Index">Browse articles</a>
+        </div>
+        <div class="alert">
+            WellYouth supports healthy routines and reflection. It does not replace professional medical or mental health care.
+        </div>
+    </div>
+    <div class="hero__visual">
+        <div class="stack">
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-card__value">Daily</div>
+                    <p>Gentle habit logging for sleep, movement, hydration, and emotional balance.</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__value">Safe</div>
+                    <p>Reviewed articles, specialist discovery, and a clear care-first assistant tone.</p>
+                </div>
+            </div>
+            <div class="surface-card">
+                <h3>What you can do here</h3>
+                <div class="meta-list">
+                    <span><i class="fas fa-check-circle"></i> Track habits</span>
+                    <span><i class="fas fa-book-open"></i> Read health guidance</span>
+                    <span><i class="fas fa-users"></i> Join support groups</span>
+                    <span><i class="fas fa-wind"></i> Run quick activities</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="page-section">
+    <div class="page-header">
+        <div class="page-header__content">
+            <span class="page-header__eyebrow"><i class="fas fa-compass"></i> Main sections</span>
+            <h2>Explore the platform clearly</h2>
+            <p>Each area is focused on one part of health support instead of mixing everything into the same screen.</p>
+        </div>
+    </div>
+
+    <div class="quick-grid">
+        <article class="surface-card feature-card">
+            <div class="feature-card__icon"><i class="fas fa-heartbeat"></i></div>
+            <h3>Habits</h3>
+            <p>Track the small actions that improve physical and mental resilience over time.</p>
+            <a class="button button--outline" asp-controller="Habits" asp-action="Index">Go to habits</a>
+        </article>
+
+        <article class="surface-card feature-card">
+            <div class="feature-card__icon"><i class="fas fa-book-medical"></i></div>
+            <h3>Articles</h3>
+            <p>Read short expert-reviewed content on sleep, stress, movement, and nutrition.</p>
+            <a class="button button--outline" asp-controller="Articles" asp-action="Index">Explore articles</a>
+        </article>
+
+        <article class="surface-card feature-card">
+            <div class="feature-card__icon"><i class="fas fa-users"></i></div>
+            <h3>Community</h3>
+            <p>Join groups that support shared progress and respectful conversations.</p>
+            <a class="button button--outline" asp-controller="Community" asp-action="Index">View groups</a>
+        </article>
+
+        <article class="surface-card feature-card">
+            <div class="feature-card__icon"><i class="fas fa-user-doctor"></i></div>
+            <h3>Specialists</h3>
+            <p>Find verified professionals who focus on youth care and practical support.</p>
+            <a class="button button--outline" asp-controller="Specialists" asp-action="Index">Find specialists</a>
+        </article>
+
+        <article class="surface-card feature-card">
+            <div class="feature-card__icon"><i class="fas fa-wind"></i></div>
+            <h3>Activities</h3>
+            <p>Take quick breathing and wellness breaks that still connect to your progress.</p>
+            <a class="button button--outline" asp-controller="Activities" asp-action="Index">Open activities</a>
+        </article>
+    </div>
+</section>

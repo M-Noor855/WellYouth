@@ -1,0 +1,40 @@
+@model WellYouth.Models.Entities.WellnessActivity
+@{
+    ViewData["Title"] = "Mindful Minute";
+}
+
+<section class="page-section">
+    <div class="content-container content-container--narrow">
+        <div class="surface-card" data-mindfulness-root>
+            <div class="activity-stage">
+                <span class="page-header__eyebrow"><i class="fas fa-spa"></i> Present Moment</span>
+                <h1>@Model.Title</h1>
+                <p>@Model.Description</p>
+
+                <div class="activity-visual">
+                    <i class="fas fa-spa" style="color: var(--color-primary);"></i>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card__value" data-mindfulness-timer>60</div>
+                    <p>seconds remaining</p>
+                </div>
+                
+                <button type="button" class="button button--secondary" data-mindfulness-start>
+                    Start Mindful Minute
+                </button>
+
+                <div class="stat-card stat-card--info" style="border-left: 4px solid var(--color-primary);">
+                    <p>Focus on your natural breath. When your mind wanders, gently bring it back to the present moment.</p>
+                </div>
+
+                <form asp-action="Complete" method="post" class="button--full-width">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="button button--primary button--large button--full-width" disabled data-activity-complete>
+                        Finish mindfulness (+@Model.PointsValue points)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

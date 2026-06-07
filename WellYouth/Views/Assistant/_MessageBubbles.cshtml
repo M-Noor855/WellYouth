@@ -1,0 +1,18 @@
+@using System.Text.RegularExpressions
+@model List<WellYouth.Models.Entities.AssistantMessage>
+
+@foreach (var msg in Model)
+{
+    <article class="chat-bubble @(msg.Sender == "User" ? "chat-bubble--user" : "chat-bubble--assistant")">
+        <div class="chat-bubble__body">
+            @{
+                var encoded = System.Net.WebUtility.HtmlEncode(msg.Content);
+                var formatted = Regex.Replace(encoded, @"\*\*(.*?)\*\*", "<strong>$1</strong>");
+            }
+            @Html.Raw(formatted)
+        </div>
+        <div class="chat-bubble__footer">
+            <time>@msg.SentAt.ToString("h:mm tt")</time>
+        </div>
+    </article>
+}

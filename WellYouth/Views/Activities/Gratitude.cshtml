@@ -1,0 +1,34 @@
+@model WellYouth.Models.Entities.WellnessActivity
+@{
+    ViewData["Title"] = "Gratitude Note";
+}
+
+<section class="page-section">
+    <div class="content-container content-container--narrow">
+        <div class="surface-card" data-mood-root>
+            <div class="activity-stage">
+                <span class="page-header__eyebrow"><i class="fas fa-heart"></i> Positive Reflection</span>
+                <h1>@Model.Title</h1>
+                <p>@Model.Description</p>
+
+                <div class="activity-visual color-danger">
+                    <i class="fas fa-pen-fancy"></i>
+                </div>
+
+                <div class="field">
+                    <textarea class="gratitude-textarea" rows="4" 
+                              placeholder="Today I am grateful for..." 
+                              data-gratitude-input></textarea>
+                    <p class="field__help text-center"><i class="fas fa-shield-halved"></i> Privacy check: Your note is for you only and won't be saved in our database.</p>
+                </div>
+
+                <form asp-action="Complete" method="post" class="button--full-width">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="button button--primary button--large button--full-width" disabled data-activity-complete>
+                        Submit gratitude (+@Model.PointsValue points)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

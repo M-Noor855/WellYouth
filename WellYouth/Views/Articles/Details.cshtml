@@ -1,0 +1,48 @@
+@model WellYouth.Models.Entities.Article
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<section class="page-section">
+    <div class="content-container">
+        <div class="stack">
+            <a asp-action="Index" class="button button--ghost button--inline-start">
+                <i class="fas fa-arrow-left"></i> Back to articles
+            </a>
+
+            <article class="surface-card">
+                <div class="stack">
+                    <span class="pill pill--primary">@Model.Category?.Name</span>
+                    <h1>@Model.Title</h1>
+                    <div class="meta-list">
+                        <span>By @(Model.AuthorName ?? "WellYouth team")</span>
+                        <span>@Model.PublishedDate?.ToString("MMMM dd, yyyy")</span>
+                        @if (!string.IsNullOrWhiteSpace(Model.ReviewedBy))
+                        {
+                            <span>Reviewed by @Model.ReviewedBy</span>
+                        }
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Source))
+                    {
+                        <div class="source-attribution">
+                            <i class="fas fa-certificate"></i> Credited source: 
+                            @if (!string.IsNullOrWhiteSpace(Model.SourceUrl))
+                            {
+                                <a href="@Model.SourceUrl" target="_blank" rel="noopener noreferrer">@Model.Source</a>
+                            }
+                            else
+                            {
+                                <span>@Model.Source</span>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div class="article-body section-spacing-top">
+                    <p>@Model.Body</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>

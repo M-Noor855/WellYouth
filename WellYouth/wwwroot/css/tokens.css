@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Literata:opsz,wght@7..72,500;7..72,700&display=swap');
+
+:root {
+    --font-sans: "Manrope", sans-serif;
+    --font-serif: "Literata", serif;
+    --color-bg: #eff6f1;
+    --color-bg-strong: #dfece4;
+    --color-surface: rgba(255, 252, 246, 0.86);
+    --color-surface-strong: #fffaf2;
+    --color-surface-tint: #eef7f2;
+    --color-border: rgba(56, 86, 75, 0.14);
+    --color-text: #18302a;
+    --color-text-soft: #52665f;
+    --color-heading: #10251f;
+    --color-primary: #157a6e;
+    --color-primary-strong: #0f5f56;
+    --color-secondary: #6b8e77;
+    --color-accent: #f2a65a;
+    --color-accent-strong: #d9852f;
+    --color-danger: #b74f4b;
+    --color-success: #2d8d69;
+    --color-info: #3c7ea6;
+    --shadow-soft: 0 16px 48px rgba(18, 43, 36, 0.08);
+    --shadow-strong: 0 28px 72px rgba(18, 43, 36, 0.14);
+    --ring: 0 0 0 4px rgba(21, 122, 110, 0.16);
+    --radius-sm: 0.75rem;
+    --radius-md: 1.125rem;
+    --radius-lg: 1.75rem;
+    --radius-pill: 999px;
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --container-max: 76rem;
+    --content-max: 52rem;
+    --header-height: 5.5rem;
+    --transition-fast: 160ms ease;
+    --transition-base: 240ms ease;
+}
+
+[data-theme="dark"] {
+    --color-bg: #0f1f1c;
+    --color-bg-strong: #142924;
+    --color-surface: rgba(22, 40, 35, 0.88);
+    --color-surface-strong: #182f29;
+    --color-surface-tint: #1b3630;
+    --color-border: rgba(220, 237, 231, 0.1);
+    --color-text: #edf5f1;
+    --color-text-soft: #b4c8c0;
+    --color-heading: #fbfdfb;
+    --color-primary: #62c3ab;
+    --color-primary-strong: #8bd6c3;
+    --color-secondary: #8cab96;
+    --color-accent: #f0b36f;
+    --color-accent-strong: #ffc889;
+    --color-danger: #de8a84;
+    --color-success: #6fce9d;
+    --color-info: #86b8dd;
+    --shadow-soft: 0 16px 48px rgba(0, 0, 0, 0.28);
+    --shadow-strong: 0 28px 72px rgba(0, 0, 0, 0.4);
+    --ring: 0 0 0 4px rgba(98, 195, 171, 0.2);
+}

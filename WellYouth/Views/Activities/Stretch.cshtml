@@ -1,0 +1,47 @@
+@model WellYouth.Models.Entities.WellnessActivity
+@{
+    ViewData["Title"] = "Quick Stretch";
+}
+
+<section class="page-section">
+    <div class="content-container content-container--narrow">
+        <div class="surface-card" data-mood-root>
+            <div class="activity-stage">
+                <span class="page-header__eyebrow"><i class="fas fa-person-walking"></i> Movement Break</span>
+                <h1>@Model.Title</h1>
+                <p>@Model.Description</p>
+
+                <div class="checklist-group w-100">
+                    <label class="checklist-item">
+                        <input type="checkbox" class="checkbox-item__input" data-stretch-step>
+                        <div class="checklist-item__content">
+                            <h4>1. Neck Rolls</h4>
+                            <p>Gently roll your neck in a slow circle 5 times each way.</p>
+                        </div>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" class="checkbox-item__input" data-stretch-step>
+                        <div class="checklist-item__content">
+                            <h4>2. Shoulder Shrugs</h4>
+                            <p>Lift your shoulders to your ears, hold for 3s, then release. Repeat 5 times.</p>
+                        </div>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" class="checkbox-item__input" data-stretch-step>
+                        <div class="checklist-item__content">
+                            <h4>3. Overhead Reach</h4>
+                            <p>Reach both arms high toward the ceiling and hold for 15 seconds.</p>
+                        </div>
+                    </label>
+                </div>
+
+                <form asp-action="Complete" method="post" class="button--full-width">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="button button--primary button--large button--full-width" disabled data-activity-complete>
+                        All stretches done! (+@Model.PointsValue points)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

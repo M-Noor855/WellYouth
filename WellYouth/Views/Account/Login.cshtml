@@ -1,0 +1,45 @@
+@model WellYouth.Models.ViewModels.Account.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<section class="page-section">
+    <div class="page-header">
+        <div class="page-header__content">
+            <span class="page-header__eyebrow"><i class="fas fa-door-open"></i> Return to your space</span>
+            <h1>Log in to continue your health routine</h1>
+            <p>Access your habits, score history, saved conversations, and community activity.</p>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="surface-card surface-card--accent">
+            <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="stack">
+                <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+                <div class="field">
+                    <label asp-for="Email" class="field__label"></label>
+                    <input asp-for="Email" placeholder="name@example.com" />
+                    <span asp-validation-for="Email" class="field-validation-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Password" class="field__label"></label>
+                    <input asp-for="Password" placeholder="Password" />
+                    <span asp-validation-for="Password" class="field-validation-error"></span>
+                </div>
+
+                <label class="cluster">
+                    <input asp-for="RememberMe" class="form-control-inline" />
+                    <span>@Html.DisplayNameFor(m => m.RememberMe)</span>
+                </label>
+
+                <div class="form-actions form-actions--stretch">
+                    <button type="submit" class="button button--primary section-width-full">Log in</button>
+                </div>
+            </form>
+
+            <p class="text-muted">Need an account? <a asp-action="Register"><strong>Create one here.</strong></a></p>
+        </div>
+    </div>
+</section>

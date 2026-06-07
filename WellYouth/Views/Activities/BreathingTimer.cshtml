@@ -1,0 +1,26 @@
+@model WellYouth.Models.Entities.WellnessActivity
+@{
+    ViewData["Title"] = "Breathing Timer";
+}
+
+<section class="page-section">
+    <div class="content-container">
+        <div class="surface-card">
+            <div class="activity-stage" data-breathing-root>
+                <span class="page-header__eyebrow"><i class="fas fa-wind"></i> Guided breathing</span>
+                <h1 class="heading-breathing">Deep breathing exercise</h1>
+                <p>Follow the circle. Inhale as it expands, exhale as it settles.</p>
+
+                <div class="breathing-circle" data-breathing-circle></div>
+                <div class="stat-card">
+                    <div class="stat-card__value" data-breathing-timer>60</div>
+                    <p data-breathing-instruction>Get ready...</p>
+                </div>
+
+                <form asp-action="Complete" method="post">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
